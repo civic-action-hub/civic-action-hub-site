@@ -3,6 +3,7 @@ import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const oswald = Oswald({
      variable: "--font-display",
@@ -28,8 +29,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col font-sans">
      <Header />
-     {children}
-     <Footer />
+   {children}
+   <Footer />
+   <Analytics />
    </body>
     </html>
   );
