@@ -5,6 +5,27 @@ type SearchParams = {
   q?: string;
 };
 
+type Entry = {
+  id: string;
+  title: string;
+  type: string;
+  status: string | null;
+  state_code: string | null;
+  geo_scope: string | null;
+  council_name: string | null;
+  is_virtual: boolean | null;
+  start_date: string | null;
+  end_date: string | null;
+  matchCount: number;
+};
+
+function isPastEvent(entry: Entry, todayStr: string): boolean {
+  if (entry.type !== "event") return false;
+  const effectiveDate = entry.end_date ?? entry.start_date;
+  if (!effectiveDate) return false;
+  return effectiveDate < todayStr;
+}
+
 async function matchTagsToQuery(
   query: string,
   tags: { slug: string; label: string }[]
@@ -85,18 +106,7 @@ export default async function SearchPage({
     matchingSlugs.includes(t.slug)
   );
 
-  let entries: Array<{
-    id: string;
-    title: string;
-    type: string;
-    status: string | null;
-    state_code: string | null;
-    geo_scope: string | null;
-    council_name: string | null;
-    is_virtual: boolean | null;
-    end_date: string | null;
-    matchCount: number;
-  }> = [];
+  let entries: Entry[] = [];
 
   if (matchingSlugs.length > 0) {
     const { data: tagLinks } = await supabase
@@ -104,9 +114,6 @@ export default async function SearchPage({
       .select("entry_id, issue_tags!inner(slug)")
       .in("issue_tags.slug", matchingSlugs);
 
-    // Count how many of the matched tags each entry actually hits,
-    // so entries matching multiple relevant tags rank above entries
-    // that only matched one (possibly borderline) tag.
     const matchCounts = new Map<string, number>();
     for (const link of tagLinks ?? []) {
       const id = link.entry_id as string;
@@ -118,15 +125,18 @@ export default async function SearchPage({
       const { data } = await supabase
         .from("entries")
         .select(
-          "id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date"
+          "id, title, type, status, state_code, geo_scope, council_name, is_virtual, start_date, end_date"
         )
         .in("id", entryIds);
+
+      const todayStr = new Date().toISOString().slice(0, 10);
 
       entries = (data ?? [])
         .map((entry) => ({
           ...entry,
           matchCount: matchCounts.get(entry.id) ?? 0,
         }))
+        .filter((entry) => !isPastEvent(entry, todayStr))
         .sort((a, b) => b.matchCount - a.matchCount);
     }
   }

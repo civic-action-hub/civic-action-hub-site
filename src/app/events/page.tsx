@@ -13,6 +13,29 @@ const EVENT_STATUS_OPTIONS = [
   { value: "closed", label: "Past" },
 ];
 
+type Entry = {
+  id: string;
+  title: string;
+  type: string;
+  status: string | null;
+  state_code: string | null;
+  geo_scope: string | null;
+  council_name: string | null;
+  is_virtual: boolean | null;
+  start_date: string | null;
+  end_date: string | null;
+};
+
+// An event has "passed" once its end date (or start date, if no end
+// date) is before today. Events with no date at all are never
+// considered past — we don't want to silently hide something just
+// because its date is missing.
+function isPastEvent(entry: Entry, todayStr: string): boolean {
+  const effectiveDate = entry.end_date ?? entry.start_date;
+  if (!effectiveDate) return false;
+  return effectiveDate < todayStr;
+}
+
 export default async function EventsPage({
   searchParams,
 }: {
@@ -41,28 +64,17 @@ export default async function EventsPage({
     }
   }
 
-  let entries: Array<{
-     id: string;
-     title: string;
-     type: string;
-     status: string | null;
-     state_code: string | null;
-     geo_scope: string | null;
-     council_name: string | null;
-     is_virtual: boolean | null;
-     end_date: string | null;
-   }> = [];
+  let entries: Entry[] = [];
 
   if (!entryIds || entryIds.length > 0) {
     let query = supabase
       .from("entries")
-     .select("id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date")
+      .select(
+        "id, title, type, status, state_code, geo_scope, council_name, is_virtual, start_date, end_date"
+      )
       .eq("type", "event")
-      .order("created_at", { ascending: false });
+      .order("start_date", { ascending: true });
 
-    if (params.status) {
-      query = query.eq("status", params.status);
-    }
     if (params.location === "national") {
       query = query.eq("geo_scope", "national");
     } else if (params.location) {
@@ -74,6 +86,16 @@ export default async function EventsPage({
 
     const { data } = await query;
     entries = data ?? [];
+  }
+
+  // Default view (and explicit "Upcoming") hides past events.
+  // Explicit "Past" shows only past events. Nothing gets deleted —
+  // this is purely a display filter computed fresh from today's date.
+  const todayStr = new Date().toISOString().slice(0, 10);
+  if (params.status === "closed") {
+    entries = entries.filter((e) => isPastEvent(e, todayStr));
+  } else {
+    entries = entries.filter((e) => !isPastEvent(e, todayStr));
   }
 
   return (

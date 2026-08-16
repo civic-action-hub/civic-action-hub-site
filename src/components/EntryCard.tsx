@@ -11,6 +11,7 @@ type Entry = {
   geo_scope: string | null;
   council_name: string | null;
   is_virtual: boolean | null;
+  start_date: string | null;
   end_date: string | null;
 };
 
@@ -88,6 +89,22 @@ function formatLocation(
     .join(" ");
 }
 
+// Events want to show WHEN they happen (start_date). Petitions/legal
+// matters want to show when they close (end_date). This picks the
+// right one and the right label for each.
+function getDateDisplay(
+  type: string,
+  startDate: string | null,
+  endDate: string | null
+): string | null {
+  if (type === "event") {
+    const formatted = formatDate(startDate) ?? formatDate(endDate);
+    return formatted ? `On ${formatted}` : null;
+  }
+  const formatted = formatDate(endDate);
+  return formatted ? `Ends ${formatted}` : null;
+}
+
 export default function EntryCard({ entry }: { entry: Entry }) {
   const status = resolveStatus(entry.status);
   const styles = STATUS_STYLES[status];
@@ -96,7 +113,11 @@ export default function EntryCard({ entry }: { entry: Entry }) {
     entry.geo_scope,
     entry.council_name
   );
-  const endDate = formatDate(entry.end_date);
+  const dateDisplay = getDateDisplay(
+    entry.type,
+    entry.start_date,
+    entry.end_date
+  );
 
   return (
     <Link
@@ -121,10 +142,10 @@ export default function EntryCard({ entry }: { entry: Entry }) {
             <span>Online</span>
           </>
         )}
-        {endDate && (
+        {dateDisplay && (
           <>
             <span>&middot;</span>
-            <span>Ends {endDate}</span>
+            <span>{dateDisplay}</span>
           </>
         )}
       </div>

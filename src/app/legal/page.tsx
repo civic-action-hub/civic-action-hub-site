@@ -51,13 +51,14 @@ export default async function LegalPage({
     council_name: string | null;
     is_virtual: boolean | null;
     end_date: string | null;
+    start_date: string | null;
   }> = [];
 
   if (!entryIds || entryIds.length > 0) {
     let query = supabase
       .from("entries")
       .select(
-        "id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date"
+        "id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date, start_date"
       )
       .eq("type", "legal")
       .order("created_at", { ascending: false });

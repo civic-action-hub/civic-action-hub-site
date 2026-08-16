@@ -3,6 +3,16 @@ import CategoryCard from "@/components/CategoryCard";
 import EntryCard from "@/components/EntryCard";
 import SearchHero from "@/components/SearchHero";
 
+function isPastEvent(
+  entry: { type: string; start_date: string | null; end_date: string | null },
+  todayStr: string
+): boolean {
+  if (entry.type !== "event") return false;
+  const effectiveDate = entry.end_date ?? entry.start_date;
+  if (!effectiveDate) return false;
+  return effectiveDate < todayStr;
+}
+
 export default async function Home() {
   const { count: petitionsCount } = await supabase
     .from("entries")
@@ -22,13 +32,18 @@ export default async function Home() {
     .eq("type", "legal")
     .eq("status", "open");
 
-  const { data: recentEntries } = await supabase
+  const { data: recentEntriesRaw } = await supabase
     .from("entries")
     .select(
-      "id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date"
+      "id, title, type, status, state_code, geo_scope, council_name, is_virtual, start_date, end_date"
     )
     .order("created_at", { ascending: false })
-    .limit(4);
+    .limit(8);
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const recentEntries = (recentEntriesRaw ?? [])
+    .filter((e) => !isPastEvent(e, todayStr))
+    .slice(0, 4);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
@@ -65,7 +80,7 @@ export default async function Home() {
         Recently added
       </h2>
       <div className="flex flex-col gap-3">
-        {recentEntries?.map((entry) => (
+        {recentEntries.map((entry) => (
           <EntryCard key={entry.id} entry={entry} />
         ))}
       </div>

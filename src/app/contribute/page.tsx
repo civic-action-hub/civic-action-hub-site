@@ -4,13 +4,23 @@ export default function ContributePage() {
       <h1 className="font-display font-semibold text-4xl text-gray-900 mb-4">
         Help build the picture
       </h1>
-      <p className="text-gray-700 font-sans leading-relaxed mb-8">
+      <p className="text-gray-700 font-sans leading-relaxed mb-6">
         Civic Action Hub is built by people spotting petitions, events, and
         legal matters worth knowing about — in a newsletter, on social media,
         from a friend — and logging them here so others can find them too.
         Every campaign on this site started as someone&rsquo;s two-minute
         submission.
       </p>
+
+      <a
+        href="https://civic-hub-intake.pages.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block rounded-full px-6 py-3 text-white font-sans font-medium mb-8"
+        style={{ backgroundColor: "#df1278" }}
+      >
+        Log something you found →
+      </a>
 
       <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
         <h2 className="font-display font-semibold text-xl text-gray-900 mb-3">
@@ -31,7 +41,7 @@ export default function ContributePage() {
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
         <h2 className="font-display font-semibold text-xl text-gray-900 mb-3">
           What&rsquo;s worth submitting
         </h2>
@@ -49,16 +59,6 @@ export default function ContributePage() {
           instead.
         </p>
       </div>
-
-      <a
-        href="https://civic-hub-intake.pages.dev"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block rounded-full px-6 py-3 text-white font-sans font-medium"
-        style={{ backgroundColor: "#df1278" }}
-      >
-        Log something you found →
-      </a>
     </div>
   );
 }

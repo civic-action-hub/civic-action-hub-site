@@ -65,11 +65,14 @@ export default function ContactPage() {
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
-            <label className="block text-sm font-sans font-medium text-gray-700 mb-1">
+            <label htmlFor="contact-name" className="block text-sm font-sans font-medium text-gray-700 mb-1">
               Your name <span className="text-gray-400">(optional)</span>
             </label>
             <input
               type="text"
+              id="contact-name"
+              name="name"
+              autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-sans"
@@ -77,11 +80,14 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-sans font-medium text-gray-700 mb-1">
+            <label htmlFor="contact-email" className="block text-sm font-sans font-medium text-gray-700 mb-1">
               Your email <span className="text-gray-400">(optional, if you want a reply)</span>
             </label>
             <input
               type="email"
+              id="contact-email"
+              name="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-sans"
@@ -89,10 +95,11 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-sans font-medium text-gray-700 mb-1">
+            <label htmlFor="contact-category" className="block text-sm font-sans font-medium text-gray-700 mb-1">
               What's this about?
             </label>
             <select
+              id="contact-category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-sans"
@@ -106,10 +113,11 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-sans font-medium text-gray-700 mb-1">
+            <label htmlFor="contact-message" className="block text-sm font-sans font-medium text-gray-700 mb-1">
               Message
             </label>
             <textarea
+              id="contact-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               required
