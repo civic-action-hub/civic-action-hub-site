@@ -3,6 +3,13 @@ import CategoryCard from "@/components/CategoryCard";
 import EntryCard from "@/components/EntryCard";
 import SearchHero from "@/components/SearchHero";
 
+// Without this, Next.js can treat this page as static (since it has
+// no URL params or other "dynamic" signals) and cache it at deploy
+// time — meaning counts and "Recently added" would only ever update
+// the next time the site gets redeployed, not when new data arrives.
+// This forces it to fetch fresh from Supabase on every real visit.
+export const dynamic = "force-dynamic";
+
 function isPastEvent(
   entry: { type: string; start_date: string | null; end_date: string | null },
   todayStr: string
