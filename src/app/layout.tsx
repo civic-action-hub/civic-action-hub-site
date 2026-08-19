@@ -28,7 +28,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${oswald.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-     <Header />
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Civic Action Hub",
+      alternateName: "Civic Action Hub",
+      url: "https://civicactionhub.org",
+      description:
+        "An Australian civic technology platform that aggregates petitions, events, and legal/civic actions into one searchable, filterable location.",
+      areaServed: {
+        "@type": "Country",
+        name: "Australia",
+      },
+      sameAs: [
+        "https://www.instagram.com/civicactionhub",
+      ],
+    }),
+  }}
+/>
+<Header />
    {children}
    <Footer />
    <Analytics />
