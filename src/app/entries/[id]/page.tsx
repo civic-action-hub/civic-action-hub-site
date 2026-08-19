@@ -53,8 +53,8 @@ export default async function EntryDetailPage({
   const { data: entry } = await supabase
     .from("entries")
     .select(
-      "id, title, description, url, type, status, action_type, state_code, geo_scope, council_name, is_virtual, end_date, source_type, source_name"
-    )
+  "id, title, description, url, type, status, action_type, state_code, geo_scope, council_name, is_virtual, start_date, end_date, source_type, source_name"
+)
     .eq("id", id)
     .single();
 
@@ -86,8 +86,50 @@ export default async function EntryDetailPage({
   const backLabel = TYPE_LABELS[entry.type] ?? "Entries";
   const actionLabel = ACTION_LABELS[entry.action_type ?? ""] ?? "Take action";
 
+    const entryUrl = `https://civicactionhub.org/entries/${entry.id}`;
+
+  const schema =
+    entry.type === "event"
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Event",
+          name: entry.title,
+          description: entry.description ?? undefined,
+          startDate: entry.start_date ?? undefined,
+          endDate: entry.end_date ?? undefined,
+          eventStatus:
+            entry.status === "closed"
+              ? "https://schema.org/EventCancelled"
+              : "https://schema.org/EventScheduled",
+          eventAttendanceMode: entry.is_virtual
+            ? "https://schema.org/OnlineEventAttendanceMode"
+            : "https://schema.org/OfflineEventAttendanceMode",
+          location: entry.is_virtual
+            ? { "@type": "VirtualLocation", url: entry.url ?? entryUrl }
+            : {
+                "@type": "Place",
+                name: location ?? "Australia",
+              },
+          url: entryUrl,
+        }
+      : {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: entry.title,
+          description: entry.description ?? undefined,
+          url: entryUrl,
+          about: TYPE_LABELS[entry.type] ?? entry.type,
+          ...(entry.type === "petition" && entry.end_date
+            ? { validThrough: entry.end_date }
+            : {}),
+        };
+
   return (
     <div className="max-w-2xl mx-auto px-6 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Link
         href={backHref}
         className="text-sm font-sans text-gray-500 hover:text-gray-700 mb-6 inline-block"
