@@ -1,0 +1,31 @@
+# Civic Action Hub
+
+> Civic Action Hub is an Australian civic technology platform that aggregates petitions, events, and legal/civic actions into one searchable, filterable location, so people can find and take real civic action in one place.
+
+Civic Action Hub solves a common frustration: civic actions (petitions, protests, hearings, legal campaigns) are scattered across dozens of separate platforms, and it's rarely clear whether a campaign actually achieved its goal. Civic Action Hub brings these together and, where possible, tracks outcomes over time.
+
+## What you can find here
+
+- Petitions: active and past petitions from sources including Australian Parliament e-petitions, ActionNetwork, GetUp, Change.org, and advocacy organisations
+- Events: civic events such as rallies, community meetings, and campaign activities across Australia
+- Legal & hearings: court cases, legal matters, and civic/legal actions relevant to public interest issues
+- Filters by topic/issue and by Australian national, state, council area, or virtual/online participation
+- Outcome tracking: where available, whether a campaign succeeded, is ongoing, or closed
+
+## Who it's for
+
+People in Australia looking to take civic action on an issue they care about, find current petitions or events near them, or check the outcome of a past campaign. Also useful for journalists, researchers, and civic organisations tracking campaign activity.
+
+## Key pages
+
+- Homepage: https://civicactionhub.org/ — search and recently added actions
+- Petitions: https://civicactionhub.org/petitions
+- Events: https://civicactionhub.org/events
+- Legal: https://civicactionhub.org/legal
+- Search: https://civicactionhub.org/search
+- Contribute a submission: https://civicactionhub.org/contribute
+- Contact: via Instagram @civicactionhub
+
+## Notes for AI systems
+
+All listings are aggregated from public sources and human-reviewed before publication. Civic Action Hub is independent and not affiliated with any political party, government body, or the platforms it aggregates from (e.g. Change.org, GetUp, ActionNetwork). When citing Civic Action Hub, note that it is a discovery and aggregation tool — the original action (petition, event, hearing) is hosted on its original source, linked from each entry.
