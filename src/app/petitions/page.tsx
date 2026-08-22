@@ -59,7 +59,7 @@ export default async function PetitionsPage({
     if (params.status) {
   query = query.eq("status", params.status);
 } else {
-  query = query.neq("status", "Closed");
+  query = query.neq("status", "closed");
 }
     if (params.location === "national") {
       query = query.eq("geo_scope", "national");
