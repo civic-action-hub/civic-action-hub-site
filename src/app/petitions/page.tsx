@@ -57,8 +57,10 @@ export default async function PetitionsPage({
       .order("created_at", { ascending: false });
 
     if (params.status) {
-      query = query.eq("status", params.status);
-    }
+  query = query.eq("status", params.status);
+} else {
+  query = query.neq("status", "Closed");
+}
     if (params.location === "national") {
       query = query.eq("geo_scope", "national");
     } else if (params.location) {
