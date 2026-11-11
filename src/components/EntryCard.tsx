@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ViewedBadge } from "./ViewedTracker";
 
 type EntryStatus = "open" | "upcoming" | "achieved" | "closed" | "unknown";
 
@@ -135,6 +136,7 @@ export default function EntryCard({ entry }: { entry: Entry }) {
         >
           {styles.label}
         </span>
+        <ViewedBadge id={entry.id} />
         {location && <span>{location}</span>}
         {entry.is_virtual && (
           <>

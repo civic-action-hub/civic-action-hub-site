@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { MarkViewed } from "@/components/ViewedTracker";
 
 type Params = {
   id: string;
@@ -130,6 +131,7 @@ export default async function EntryDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <MarkViewed id={entry.id} />
       <Link
         href={backHref}
         className="text-sm font-sans text-gray-500 hover:text-gray-700 mb-6 inline-block"
