@@ -66,10 +66,16 @@ export default async function LegalPage({
     if (params.status) {
       query = query.eq("status", params.status);
     }
-    if (params.location === "national") {
+        if (params.location === "national") {
       query = query.eq("geo_scope", "national");
+    } else if (params.location === "international") {
+      query = query.eq("geo_scope", "international");
     } else if (params.location) {
       query = query.eq("state_code", params.location);
+    } else {
+      // Default view: keep the main list Australian. The "or" keeps
+      // entries with a blank location visible.
+      query = query.or("geo_scope.is.null,geo_scope.neq.international");
     }
     if (entryIds) {
       query = query.in("id", entryIds);

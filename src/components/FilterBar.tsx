@@ -130,6 +130,7 @@ export default function FilterBar({
               <option value="TAS">TAS</option>
               <option value="ACT">ACT</option>
               <option value="NT">NT</option>
+                            <option value="international">Outside Australia</option>
             </select>
           </div>
 
