@@ -11,6 +11,7 @@ type Entry = {
   state_code: string | null;
   geo_scope: string | null;
   council_name: string | null;
+  country?: string | null;
   is_virtual: boolean | null;
   start_date: string | null;
   end_date: string | null;
@@ -77,8 +78,12 @@ function formatDate(dateStr: string | null): string | null {
 function formatLocation(
   stateCode: string | null,
   geoScope: string | null,
-  councilName: string | null
+  councilName: string | null,
+  country?: string | null
 ): string | null {
+  if (geoScope === "international") {
+    return country ? `🌏 ${country}` : "🌏 Outside Australia";
+  }
   if (councilName && stateCode) return `${councilName}, ${stateCode}`;
   if (councilName) return councilName;
   if (stateCode) return stateCode;
@@ -112,7 +117,8 @@ export default function EntryCard({ entry }: { entry: Entry }) {
   const location = formatLocation(
     entry.state_code,
     entry.geo_scope,
-    entry.council_name
+    entry.council_name,
+    entry.country
   );
   const dateDisplay = getDateDisplay(
     entry.type,

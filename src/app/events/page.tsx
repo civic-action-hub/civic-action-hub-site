@@ -70,7 +70,7 @@ export default async function EventsPage({
     let query = supabase
       .from("entries")
       .select(
-        "id, title, type, status, state_code, geo_scope, council_name, is_virtual, start_date, end_date"
+        "id, title, type, status, state_code, geo_scope, council_name, country, is_virtual, start_date, end_date"
       )
       .eq("type", "event")
       .order("start_date", { ascending: true });

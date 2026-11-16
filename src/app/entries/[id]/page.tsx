@@ -54,7 +54,7 @@ export default async function EntryDetailPage({
   const { data: entry } = await supabase
     .from("entries")
     .select(
-  "id, title, description, url, type, status, action_type, state_code, geo_scope, council_name, is_virtual, start_date, end_date, source_type, source_name"
+  "id, title, description, url, type, status, action_type, state_code, geo_scope, council_name, country, is_virtual, start_date, end_date, source_type, source_name"
 )
     .eq("id", id)
     .single();

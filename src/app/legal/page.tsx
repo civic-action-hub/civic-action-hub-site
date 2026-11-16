@@ -58,7 +58,7 @@ export default async function LegalPage({
     let query = supabase
       .from("entries")
       .select(
-        "id, title, type, status, state_code, geo_scope, council_name, is_virtual, end_date, start_date"
+        "id, title, type, status, state_code, geo_scope, council_name, country, is_virtual, end_date, start_date"
       )
       .eq("type", "legal")
       .order("created_at", { ascending: false });

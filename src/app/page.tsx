@@ -42,7 +42,7 @@ export default async function Home() {
   const { data: recentEntriesRaw } = await supabase
     .from("entries")
     .select(
-      "id, title, type, status, state_code, geo_scope, council_name, is_virtual, start_date, end_date"
+      "id, title, type, status, state_code, geo_scope, council_name, country, is_virtual, start_date, end_date"
     )
     .order("created_at", { ascending: false })
     .limit(8);
